@@ -4,10 +4,25 @@ POST {{base_url}}/users
 Content-Type: application/json
 
 {
-    "Username": "asdasdas",
-	"Password": "asdasdas",
-	"FirstName": "asdasdas",
-	"LastName": "asdasdas",
-	"Email": "asdasdas",
-	"Phone": "asdasdas"
+    "Username": "user1",
+	"Password": "somepassword",
+	"FirstName": "John",
+	"LastName": "Doe",
+	"Email": "john.doe@example.com",
+	"Phone": "1234567890"
+}
+
+###
+GET {{base_url}}/users/profile
+Content-Type: application/json
+Authorization: Bearer v2.local.Lxjq_Ci8j675bzmZ9jHLw2fUofze2ULCr6EtVrpDUVepiXNSf-j60Tq9PQHtNsY_tkPq80rydXXI-ZMv6iyTtBcp3nyzFzKPkV2GJawXrpnpDqXmJHOzK1l-9Feez8onBWJcOgmL84Yoj98QH8URm06CnWVFcdF7b_56gZcHqGafZc6-ihKeHbUOft9jC7w6WMPY8Dc9Mvb6IEtWaKoEvnj2X1UQkklFVqYivmWbm1OxpByeLK_rGhoVsDBRZ0hc4jQ3pUnmna1HttRQf6Vs7g3n4A0nIi84y-SeR0tqXZPMuWK8KitgDN3qqkpUlFlW5QbYJNj8zSBeBr8fgtbPhd9Jvoz7Hn8h1XIfK5hi85E.bnVsbA
+
+###
+
+POST {{base_url}}/auth/login
+Content-Type: application/json
+
+{
+    "Username": "user1",
+	"Password": "somepassword"
 }

@@ -73,10 +73,53 @@ func (r *UserRepository) GetUserByUsername(ctx context.Context, username string)
 	return &user, nil
 }
 
+func (r *UserRepository) GetUserById(ctx context.Context, username string) (*domain.User, error) {
+	row := r.DB.QueryRowContext(ctx,
+		`SELECT id, username, password, status, created_at, updated_at 
+		FROM users 
+		WHERE username = $1`,
+		username,
+	)
+
+	var user domain.User
+	err := row.Scan(&user.ID, &user.Username, &user.Password, &user.Status, &user.CreatedAt, &user.UpdatedAt)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, fmt.Errorf("user not found")
+		}
+		return nil, err
+	}
+
+	return &user, nil
+}
+
+func (r *UserRepository) GetUserProfileByUsername(ctx context.Context, username string) (*domain.UserProfile, error) {
+	row := r.DB.QueryRowContext(ctx,
+		`SELECT
+			p.first_name, p.last_name, p.email, p.email_status, p.phone_number, p.phone_status
+		FROM users u
+		JOIN user_profile p ON u.id = p.user_id
+		WHERE u.username = $1`,
+		username,
+	)
+
+	var profile domain.UserProfile
+	err := row.Scan(&profile.ID, &profile.UserId, &profile.FirstName, &profile.LastName, &profile.Email, &profile.EmailStatus, &profile.Phone, &profile.PhoneStatus)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, fmt.Errorf("user profile not found")
+		}
+		return nil, err
+	}
+
+	// &profile
+	return &profile, nil
+}
+
 func (r *UserRepository) GetUserProfileByUserId(ctx context.Context, userId int) (*domain.UserProfile, error) {
 	row := r.DB.QueryRowContext(ctx,
-		`SELECT id, user_id, first_name, last_name, email, email_status, phone, phone_status 
-		FROM user_profiles 
+		`SELECT id, user_id, first_name, last_name, email, email_status, phone_number, phone_status 
+		FROM user_profile
 		WHERE user_id = $1`,
 		userId,
 	)

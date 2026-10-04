@@ -5,7 +5,7 @@ import "time"
 type User struct {
 	ID        int
 	Username  string
-	Password  string
+	Password  string `json:"-"`
 	Status    int
 	CreatedAt time.Time
 	UpdatedAt time.Time

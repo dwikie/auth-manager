@@ -1,6 +1,7 @@
-package handler
+package user
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/dwikie/auth-manager/internal/service"
@@ -45,4 +46,17 @@ func (h *UserHandler) CreateUser(g *gin.Context) {
 	}
 
 	g.JSON(http.StatusCreated, gin.H{"message": "User created successfully"})
+}
+
+func (h *UserHandler) GetCurrentUserProfile(g *gin.Context) {
+	userid := g.GetInt("userid")
+	fmt.Printf("Getting user profile for user id: %d", userid)
+
+	profile, err := h.userService.GetUserProfileById(g.Request.Context(), userid)
+	if err != nil {
+		g.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	g.JSON(http.StatusOK, profile)
 }
